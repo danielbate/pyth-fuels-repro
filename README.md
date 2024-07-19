@@ -11,6 +11,6 @@ Reproduction for the `The transaction reverted with an unknown reason: 123` erro
 ## RS Reproduction
 
 1. `cd test-rs`
-1. `cargo test`
+1. `PRIVATE_KEY=<private_key_here> cargo test -- --nocapture`
 
 
