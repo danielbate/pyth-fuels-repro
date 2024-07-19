@@ -72,6 +72,23 @@ pub mod update_price_abi_calls {
             .unwrap()
     }
 
+    pub async fn update_price_feeds(
+        contract: &DemoContract<WalletUnlocked>,
+        update_fee: u64,
+        update_data: Vec<Bytes>,
+    ) -> FuelCallResponse<()> {
+        contract
+            .methods()
+            .update_price_feeds(update_fee, update_data)
+            .with_contract_ids(&[ContractId::from_str(PYTH_CONTRACT_ID).unwrap().into()])
+            .call_params(CallParameters::default().with_amount(update_fee))
+            .unwrap()
+            .call()
+            .await
+            .unwrap()
+    }
+}
+
 pub async fn deploy_demo_contract() -> DemoContract<WalletUnlocked> {
     let provider = Provider::connect("testnet.fuel.network").await.unwrap();
 
