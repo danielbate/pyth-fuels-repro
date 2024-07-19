@@ -1,0 +1,18 @@
+[package]
+name = "pyth-demo-tests"
+version = "0.0.0"
+authors = ["Fuel Labs <contact@fuel.sh>"]
+edition = "2021"
+license = "Apache-2.0"
+
+[dependencies]
+fuels = { version = "0.64.0" }
+tokio = { version = "1.12", features = ["rt", "macros"] }
+reqwest = "0.11.27"
+serde_json = "1.0.114"
+base64 = "0.22"
+
+[[test]]
+harness = true
+name = "pyth-demo-tests"
+path = "src/harness.rs"
