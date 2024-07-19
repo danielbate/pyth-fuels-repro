@@ -238,5 +238,24 @@
   ],
   "loggedTypes": [],
   "messagesTypes": [],
-  "configurables": []
+  "configurables": [
+    {
+      "name": "PYTH_CONTRACT_ID",
+      "configurableType": {
+        "name": "",
+        "type": 1,
+        "typeArguments": null
+      },
+      "offset": 12664
+    },
+    {
+      "name": "FUEL_ETH_BASE_ASSET_ID",
+      "configurableType": {
+        "name": "",
+        "type": 1,
+        "typeArguments": null
+      },
+      "offset": 12768
+    }
+  ]
 }
