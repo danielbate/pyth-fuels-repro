@@ -14,7 +14,7 @@ use std::{env, str::FromStr};
 // Load abi from json
 abigen!(Contract(
     name = "DemoContract",
-    abi = "../demo-contract/out/release/demo-contract-abi.json"
+    abi = "../sway-programs/contract/out/release/contract-abi.json",
 ));
 
 const PYTH_CONTRACT_ID: &str = "c8210e27604707c8647e8924cdb708fd056dcf5bbdcce156ee3b3db37106a2b6";
@@ -72,23 +72,6 @@ pub mod update_price_abi_calls {
             .unwrap()
     }
 
-    pub async fn update_price_feeds(
-        contract: &DemoContract<WalletUnlocked>,
-        update_fee: u64,
-        update_data: Vec<Bytes>,
-    ) -> FuelCallResponse<()> {
-        contract
-            .methods()
-            .update_price_feeds(update_fee, update_data)
-            .with_contract_ids(&[ContractId::from_str(PYTH_CONTRACT_ID).unwrap().into()])
-            .call_params(CallParameters::default().with_amount(update_fee))
-            .unwrap()
-            .call()
-            .await
-            .unwrap()
-    }
-}
-
 pub async fn deploy_demo_contract() -> DemoContract<WalletUnlocked> {
     let provider = Provider::connect("testnet.fuel.network").await.unwrap();
 
@@ -98,7 +81,7 @@ pub async fn deploy_demo_contract() -> DemoContract<WalletUnlocked> {
     let deployer_wallet = WalletUnlocked::new_from_private_key(secret, Some(provider));
 
     let contract_id = Contract::load_from(
-        "../demo-contract/out/release/demo-contract.bin",
+        "../sway-programs/contract/out/release/contract.bin",
         LoadConfiguration::default(),
     )
     .unwrap()
