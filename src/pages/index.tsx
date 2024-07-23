@@ -13,9 +13,9 @@ import useAsync from "react-use/lib/useAsync";
 // Hermes URL to Fetch Price
 const hermesUrl = 'https://hermes.pyth.network/v2/updates/price/latest?ids[]=0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43';
 // Pyth cross chain contract ID
-const pythCrossChainContractId = '0xc8210e27604707c8647e8924cdb708fd056dcf5bbdcce156ee3b3db37106a2b6';
+const pythCrossChainContractId = '0x0a8767d6045f67a4749860852b0310eda4647da738db7a4039e4a176d66641d9';
 // Inter call contract ID
-const contractId = '0x2707efe2695d63bea1329d32606cedc5e07394b0fa586b664476d6137a50f1de';
+const contractId = '0x82a6742f9868a287d7d6ad14ae89bb17b804f3389163bc72ec26f6ca8b52f172';
 const hasContract = process.env.NEXT_PUBLIC_HAS_CONTRACT === "true";
 
 export default function Home() {
@@ -63,32 +63,23 @@ export default function Home() {
     console.log('Update Data:', updateData);
 
     /**
-     * Demonstrating that we can call update fee directly on the pyth contract
+     * Instantiate the Pyth contract, we need this for the external ABI
      */
     const pythContract = PythContractAbi__factory.connect(pythCrossChainContractId, wallet);
-    const resOne = await pythContract.functions.update_fee(updateData).call();
-    const fee = resOne.value;
-    console.log('Update fee by calling the cross chain contract directly:', fee);
-
-    // const resChain = await contract.functions.chain_id().addContracts([pythContract]).call();
-    // console.log('Chain ID:', resChain.value);
-    /**
-     * Demonstrating we can call some functions from the inter call contract
-     */
-    const resTime = await contract.functions.valid_time_period().addContracts([pythContract]).call();
-    console.log('Valid Time Period from the intercall contract:', resTime.value);
 
     /**
-     * Demonstrating we can't call update fee from the inter call contract
+     * Fetch the update fee
      */
-    console.log('Will now call update fee from the inter call contract:')
-    const resFee = await contract.functions.update_fee(updateData).addContracts([pythContract]).call();
-    const feeThree = resFee.value;
-    console.log('Update fee from inter call:', feeThree);
-    // const resFour = await contract.functions.update_price_feeds(fee, updateData)
-    // .addContracts([pythContract])
-    // .call();
-    // console.log('Update Price Feeds:', resFour);
+    const { waitForResult: waitForResultUpdateFee } = await contract.functions.update_fee(updateData).addContracts([pythContract]).call();
+    const { value: fee } = await waitForResultUpdateFee();
+    console.log('Update fee:', fee);
+
+    /**
+     * Update the price feeds
+     */
+    const { waitForResult: waitForResultPriceFeed } = await contract.functions.update_price_feeds(fee, updateData).addContracts([pythContract]).call();
+    const { value: updatePriceFeeds } = await waitForResultPriceFeed();
+    console.log('Update price feeds:', updatePriceFeeds);
     await refreshWalletBalance?.();
   };
 

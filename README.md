@@ -1,16 +1,16 @@
-Reproduction for the `The transaction reverted with an unknown reason: 123` error when inter calling a contract.
-
 This example works with testnet and requires the fuel browser wallet extension.
 
-![image info](./error-example.png)
+![image info](./example.png)
+
+Currently throws with the custom error `GuardianSetNotFound`
 
 ## Installation
 
 1. `npm install`
-1. `cp .env.example .env.local`
+1. `cp .env.example .env.local` and update the private key value
 1. `npm run dev`
 
-## Steps to reproduce
+## Reproduction steps
 
 1. Navigate to `http://localhost:3000`
 1. Open the developer console

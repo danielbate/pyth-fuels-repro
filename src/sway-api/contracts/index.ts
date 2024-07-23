@@ -4,11 +4,13 @@
 /* eslint-disable */
 
 /*
-  Fuels version: 0.90.0
-  Forc version: 0.60.0
-  Fuel-Core version: 0.30.0
+  Fuels version: 0.92.1
+  Forc version: 0.61.2
+  Fuel-Core version: 0.31.0
 */
 
+export type { PythContractAbi } from './PythContractAbi';
 export type { ContractAbi } from './ContractAbi';
 
+export { PythContractAbi__factory } from './factories/PythContractAbi__factory';
 export { ContractAbi__factory } from './factories/ContractAbi__factory';

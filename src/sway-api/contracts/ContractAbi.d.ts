@@ -4,9 +4,9 @@
 /* eslint-disable */
 
 /*
-  Fuels version: 0.90.0
-  Forc version: 0.60.0
-  Fuel-Core version: 0.30.0
+  Fuels version: 0.92.1
+  Forc version: 0.61.2
+  Fuel-Core version: 0.31.0
 */
 
 import type {
@@ -25,6 +25,11 @@ import type { Vec } from "./common";
 
 export type PriceInput = { confidence: BigNumberish, exponent: BigNumberish, price: BigNumberish, publish_time: BigNumberish };
 export type PriceOutput = { confidence: BN, exponent: number, price: BN, publish_time: BN };
+
+export type ContractAbiConfigurables = {
+  PYTH_CONTRACT_ID: string;
+  FUEL_ETH_BASE_ASSET_ID: string;
+};
 
 interface ContractAbiInterface extends Interface {
   functions: {

@@ -17,7 +17,7 @@ abi UpdatePrice {
 }
 
 configurable {
-    PYTH_CONTRACT_ID: b256 = 0xc8210e27604707c8647e8924cdb708fd056dcf5bbdcce156ee3b3db37106a2b6, // testnet contract
+    PYTH_CONTRACT_ID: b256 = 0x0a8767d6045f67a4749860852b0310eda4647da738db7a4039e4a176d66641d9, // testnet contract
     FUEL_ETH_BASE_ASSET_ID: b256 = 0xf8f8b6283d7fa5b672b530cbb84fcccb4ff8dc40f8176ef4544ddb1f1952ad07,
 }
 
