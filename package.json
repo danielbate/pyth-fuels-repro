@@ -2,6 +2,7 @@
   "name": "fuels-pyth-repro",
   "private": true,
   "scripts": {
+    "build": "fuels build",
     "test": "vitest --run"
   },
   "dependencies": {
