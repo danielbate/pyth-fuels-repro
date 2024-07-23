@@ -2,10 +2,11 @@
   "name": "fuels-pyth-repro",
   "private": true,
   "scripts": {
+    "build": "fuels build",
     "test": "vitest --run"
   },
   "dependencies": {
-    "fuels": "0.92.1"
+    "fuels": "0.90.0"
   },
   "devDependencies": {
     "@types/node": "^20",

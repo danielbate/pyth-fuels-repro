@@ -2,11 +2,9 @@ import { launchTestNode } from "fuels/test-utils";
 
 import { describe, it, expect } from 'vitest';
 
-import { PythContractAbi__factory } from "./src/pyth-crosschain-api";
-import crosschainBytecode from "./src/pyth-crosschain-api/PythContractAbi.hex"
-
-import { ContractAbi__factory } from "./src/sway-api";
-import contractBytecode from "./src/sway-api/ContractAbi.hex"
+import { PythContractAbi__factory, ContractAbi__factory } from "./src/contracts";
+import crosschainBytecode from "./src/contracts/PythContractAbi.hex"
+import contractBytecode from "./src/contracts/ContractAbi.hex"
 import { arrayify } from "fuels";
 
 describe("Contract tests", () => {
@@ -27,23 +25,19 @@ describe("Contract tests", () => {
         const { wallets: [wallet] } = launched;
 
         // Deploy the crosschain contract
-        const { waitForResult: initDeployWait } = await PythContractAbi__factory.deployContract(crosschainBytecode, wallet);
-        const { contract: crosschainContract} = await initDeployWait();
+        const crosschainContract = await PythContractAbi__factory.deployContract(crosschainBytecode, wallet);
 
         // Deploy the inter contract call contract
-        const { waitForResult: deployWait } = await ContractAbi__factory.deployContract(contractBytecode, wallet, { configurableConstants: { 
+        const contract = await ContractAbi__factory.deployContract(contractBytecode, wallet, { configurableConstants: { 
             // Pass the crosschain contract address to the contract as configurable
             PYTH_CONTRACT_ID: crosschainContract.id.toB256()
         }});
-        const { contract } = await deployWait();
 
         // Compare the time period of the crosschain contract and the contract
-        const { waitForResult: crosschainTimeWait } = await crosschainContract.functions.valid_time_period().call();
-        const { value: crosschainTimeValue } = await crosschainTimeWait();
+        const { value: crosschainTimeValue } = await crosschainContract.functions.valid_time_period().call();
         expect(crosschainTimeValue.toNumber()).toStrictEqual(0);
 
-        const { waitForResult: contractTimeWait } = await contract.functions.valid_time_period().call();
-        const { value: contractTimeValue } = await contractTimeWait();
+        const { value: contractTimeValue } = await contract.functions.valid_time_period().call();
         expect(contractTimeValue.toNumber()).toStrictEqual(0);
 
         expect(crosschainTimeValue).toStrictEqual(contractTimeValue);
@@ -52,13 +46,11 @@ describe("Contract tests", () => {
         const priceData = await fetchPriceUpdateData();
 
         // Compare the update fee of the crosschain contract and the contract
-        const { waitForResult: crosschainFeeWait } = await crosschainContract.functions.update_fee(priceData).call();
-        const { value: crosschainFeeValue } = await crosschainFeeWait();
+        const { value: crosschainFeeValue } = await crosschainContract.functions.update_fee(priceData).call();
         expect(crosschainFeeValue.toNumber()).toStrictEqual(0);
         
         // Throws `The transaction reverted with an unknown reason: 123`
-        const { waitForResult: contractFeeWait } = await contract.functions.update_fee(priceData).addContracts([crosschainContract]).call();
-        const { value: contractFeeValue } = await contractFeeWait();
+        const { value: contractFeeValue } = await contract.functions.update_fee(priceData).addContracts([crosschainContract]).call();
         expect(contractFeeValue.toNumber()).toStrictEqual(0);
 
         expect(crosschainFeeValue).toStrictEqual(contractFeeValue);

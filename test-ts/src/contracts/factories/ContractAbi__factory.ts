@@ -4,13 +4,13 @@
 /* eslint-disable */
 
 /*
-  Fuels version: 0.92.1
-  Forc version: 0.61.2
-  Fuel-Core version: 0.31.0
+  Fuels version: 0.90.0
+  Forc version: 0.60.0
+  Fuel-Core version: 0.30.0
 */
 
 import { Interface, Contract, ContractFactory } from "fuels";
-import type { Provider, Account, AbstractAddress, BytesLike, DeployContractOptions, StorageSlot, DeployContractResult } from "fuels";
+import type { Provider, Account, AbstractAddress, BytesLike, DeployContractOptions, StorageSlot } from "fuels";
 import type { ContractAbi, ContractAbiInterface } from "../ContractAbi";
 
 const _abi = {
@@ -261,7 +261,7 @@ const _abi = {
         "type": 1,
         "typeArguments": null
       },
-      "offset": 8888
+      "offset": 8904
     },
     {
       "name": "FUEL_ETH_BASE_ASSET_ID",
@@ -270,7 +270,7 @@ const _abi = {
         "type": 1,
         "typeArguments": null
       },
-      "offset": 8856
+      "offset": 8872
     }
   ]
 };
@@ -297,12 +297,14 @@ export const ContractAbi__factory = {
     bytecode: BytesLike,
     wallet: Account,
     options: DeployContractOptions = {}
-  ): Promise<DeployContractResult<ContractAbi>> {
+  ): Promise<ContractAbi> {
     const factory = new ContractFactory(bytecode, _abi, wallet);
 
-    return factory.deployContract<ContractAbi>({
+    const contract = await factory.deployContract({
       storageSlots: _storageSlots,
       ...options,
     });
-  },
+
+    return contract as unknown as ContractAbi;
+  }
 }

@@ -246,7 +246,7 @@
         "type": 1,
         "typeArguments": null
       },
-      "offset": 8888
+      "offset": 8904
     },
     {
       "name": "FUEL_ETH_BASE_ASSET_ID",
@@ -255,7 +255,7 @@
         "type": 1,
         "typeArguments": null
       },
-      "offset": 8856
+      "offset": 8872
     }
   ]
 }
