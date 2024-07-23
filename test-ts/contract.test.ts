@@ -2,11 +2,9 @@ import { launchTestNode } from "fuels/test-utils";
 
 import { describe, it, expect } from 'vitest';
 
-import { PythContractAbi__factory } from "./src/pyth-crosschain-api";
-import crosschainBytecode from "./src/pyth-crosschain-api/PythContractAbi.hex"
-
-import { ContractAbi__factory } from "./src/sway-api";
-import contractBytecode from "./src/sway-api/ContractAbi.hex"
+import { PythContractAbi__factory, ContractAbi__factory } from "./src/contracts";
+import crosschainBytecode from "./src/contracts/PythContractAbi.hex"
+import contractBytecode from "./src/contracts/ContractAbi.hex"
 import { arrayify } from "fuels";
 
 describe("Contract tests", () => {
@@ -47,6 +45,11 @@ describe("Contract tests", () => {
         expect(contractTimeValue.toNumber()).toStrictEqual(0);
 
         expect(crosschainTimeValue).toStrictEqual(contractTimeValue);
+
+        // Get the data sources of the crosschain contract
+        const { waitForResult: crosschainValidDataSourcesWaitForResult }  = await crosschainContract.functions.valid_data_sources().call();
+        const { value: crosschainValidDataSourcesValue } = await crosschainValidDataSourcesWaitForResult();
+        console.log(crosschainValidDataSourcesValue);
 
         // Fetch price update data
         const priceData = await fetchPriceUpdateData();
