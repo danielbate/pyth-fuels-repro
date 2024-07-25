@@ -6,7 +6,8 @@ dotenv.config({
 });
 
 export default createConfig({
-  contracts: ['./pyth-crosschain/pyth-contract', './sway-programs/contract'],
+  // contracts: ['./pyth-crosschain/pyth-contract', './sway-programs/contract'],
+  contracts: ['./sway-programs/contract'],
   output: './src/sway-api',
   providerUrl: 'https://testnet.fuel.network/v1/graphql',
   privateKey: process.env.PRIVATE_KEY,

@@ -13,9 +13,9 @@ import useAsync from "react-use/lib/useAsync";
 // Hermes URL to Fetch Price
 const hermesUrl = 'https://hermes.pyth.network/v2/updates/price/latest?ids[]=0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43';
 // Pyth cross chain contract ID
-const pythCrossChainContractId = '0x0a8767d6045f67a4749860852b0310eda4647da738db7a4039e4a176d66641d9';
+const pythCrossChainContractId = '0x1ab91bc1402a187055d3e827017ace566a103ce2a4126517da5d656d6a436aea';
 // Inter call contract ID
-const contractId = '0x82a6742f9868a287d7d6ad14ae89bb17b804f3389163bc72ec26f6ca8b52f172';
+const contractId = '0xafd7434093af3f30f59d8f6767849e7ce794230cc094a5335b83588c11776924';
 const hasContract = process.env.NEXT_PUBLIC_HAS_CONTRACT === "true";
 
 export default function Home() {
@@ -66,6 +66,10 @@ export default function Home() {
      * Instantiate the Pyth contract, we need this for the external ABI
      */
     const pythContract = PythContractAbi__factory.connect(pythCrossChainContractId, wallet);
+    console.log('Pyth Contract:', pythContract.id);
+    const { waitForResult: waitForResultPyth } = await pythContract.functions.valid_time_period().call();
+    const { value: valuePyth } = await waitForResultPyth();
+    console.log('Pyth Contract Call:', valuePyth);
 
     /**
      * Fetch the update fee

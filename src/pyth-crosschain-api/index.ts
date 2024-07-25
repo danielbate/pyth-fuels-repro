@@ -9,6 +9,6 @@
   Fuel-Core version: 0.31.0
 */
 
-export type { ContractAbi } from './ContractAbi';
+export type { PythContractAbi } from './PythContractAbi';
 
-export { ContractAbi__factory } from './factories/ContractAbi__factory';
+export { PythContractAbi__factory } from './factories/PythContractAbi__factory';
